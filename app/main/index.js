@@ -1,10 +1,12 @@
 import path from 'path';
 import { app, crashReporter, BrowserWindow, Menu, ipcMain } from 'electron';
+
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 let mainWindow = null;
 let backgroundWindow = null;
 let forceQuit = false;
+let progressBar = null;
 
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
@@ -140,14 +142,15 @@ function init() {
 function quit() {
   mainWindow = null;
   backgroundWindow = null;
+  if (progressBar!==null) progressBar.close();
+  progressBar = null;
   app.quit();
 }
+
 
 app.on('ready', async () => {
   if (isDevelopment) {
     await installExtensions();
   }
-
   init();
-
 });

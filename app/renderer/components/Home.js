@@ -20,8 +20,7 @@ class Home extends Component {
       isScanningFiles: false,
       scansInProgress: 0,
       numFilesToScan: 0,
-      numFilesScanned: 0,
-      firstLoad: true,
+      numFilesScanned: 0
     }
   }
 
@@ -35,14 +34,12 @@ class Home extends Component {
       switch (payload.type) {
         case "scanComplete":
           this.scanFileComplete(payload.absolute, payload.hashtags);
-          this.forceUpdate();
           break;
         case "scanFailed":
           this.scanFileFailed(payload.absolute, payload.errors);
           break;
         case "fileIsOutOfDate":
           this.outOfDateFileFound(payload.absolute, payload.doc);
-          this.forceUpdate();
           break;
         case "outOfDateScanComplete":
           this.outOfDateScanComplete(payload);
@@ -51,12 +48,7 @@ class Home extends Component {
     });
   }
 
-  componentDidMount() {
-    if (this.state.firstLoad) {
-      this.setState({ firstLoad: false });
-      this.refreshFiles();
-    }
-  }
+
 
   refreshFiles() {
     this.findOutOfDate();
@@ -72,6 +64,7 @@ class Home extends Component {
 
   findOutOfDate() {
     console.log("Checking which files need updating");
+
     this.setState( prevState =>  { return { isFindingOutOfDate: true }});
     ipcRenderer.send('bgmessage', {
       type: "findOutOfDateFiles",
@@ -172,18 +165,24 @@ class Home extends Component {
     )
   }
 
-  renderResultsHeader() {
+  renderResultsHeaderDoing(title) {
     return <div>
-
-      { this.state.isScanningFiles || this.state.isFindingOutOfDate ?
       <div className="m-2 float-left">
-        Refreshing...
-      </div>
-      :
+      {title}
+    </div>
+    <div className="float-right mt-2 mr-2"><ScaleLoader height={20}/></div>
+    </div>
+  }
+
+  renderResultsHeader() {
+
+    if (this.state.isScanningFiles) return this.renderResultsHeaderDoing("Scanning files...");
+    if (this.state.isFindingOutOfDate) return this.renderResultsHeaderDoing("Refreshing File List...");
+
+    return <div>
       <div className="m-2 float-left">
       { Object.keys(this.props.files).length} files found. { this.countOutOfDate() } need to updated.
       </div>
-      }
 
       { this.countOutOfDate() > 0 && this.state.scansInProgress <= 0 && !this.state.isFindingOutOfDate ?
       <Button
@@ -195,11 +194,7 @@ class Home extends Component {
       ><Icon icon={searchPlus}></Icon> Update Now</Button>
       : null }
 
-      { this.state.isFindingOutOfDate || this.state.isScanningFiles ?
-      <div className="float-right mt-2 mr-2"><ScaleLoader height={20}/></div>
-      :
       <Button color="link" size="sm" onClick={() => this.refreshFiles() } className="float-right mr-2 mt-1"><Icon icon={refresh}></Icon> Refresh</Button>
-      }
     </div>;
   }
   renderResults() {
