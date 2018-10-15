@@ -40,21 +40,15 @@ function findOutOfDate(message) {
 
 function scan(message) {
 
-  var bar = createProgressBar({
-    initialValue: 0,
-    maxValue: message.files.length,
-  });
-
   message.files.forEach( (absolute) => {
     console.log("Scanning: ", absolute);
     scanPDFFile(absolute)
       .then( (hashtags) => {
-        // ipcRenderer.send('fgmessage', {
-        //   type: "scanComplete",
-        //   absolute: absolute,
-        //   hashtags: hashtags
-        // });
-        updateProgressBar(bar);
+        ipcRenderer.send('fgmessage', {
+          type: "scanComplete",
+          absolute: absolute,
+          hashtags: hashtags
+        });
       })
       .catch( (errors) => {
         ipcRenderer.send('fgmessage', {
