@@ -1,11 +1,10 @@
-# electron-react-redux-boilerplate
-[![Build Status](https://api.travis-ci.org/jschr/electron-react-redux-boilerplate.svg)](https://travis-ci.org/jschr/electron-react-redux-boilerplate)
-[![dependencies Status](https://david-dm.org/jschr/electron-react-redux-boilerplate/status.svg)](https://david-dm.org/jschr/electron-react-redux-boilerplate)
-[![devDependencies Status](https://david-dm.org/jschr/electron-react-redux-boilerplate/dev-status.svg)](https://david-dm.org/jschr/electron-react-redux-boilerplate?type=dev)
+# HashTag Lit
+This is a cross platform application designed to search PDF files. This application will scan a set of selected folders for PDF files and search their content, looking for hashtags (e.g. \#posiHadron). It then complies a list of the discovered documents which can be filtering by the discovered hashtags.
 
-A minimal boilerplate to get started with [Electron](http://electron.atom.io/), [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org/).
+It was originally designed for researchers who need to collate scientific papers. However, it has found many other users. If you want to help then please contact Jacob - jacob@kittley.com.
 
-Including:
+## Dependencies
+This project was built using [electron-react-redux-boilerplate](https://github.com/jschr/electron-react-redux-boilerplate) and utilises the following tools:
 
 * [React Router](https://reacttraining.com/react-router/)
 * [Redux Thunk](https://github.com/gaearon/redux-thunk/)
@@ -20,12 +19,12 @@ Including:
 
 Clone the repository
 ```bash
-git clone --depth=1 git@github.com:jschr/electron-react-redux-boilerplate.git
+git clone --depth=1 https://github.com/jkittley/hashtaglit.git
 ```
 
 Install dependencies
 ```bash
-cd electron-react-redux-boilerplate
+cd hastaglit
 npm install
 ```
 
@@ -33,14 +32,6 @@ Development
 ```bash
 npm run develop
 ```
-
-## DevTools
-
-Toggle DevTools:
-
-* OSX: <kbd>Cmd</kbd> <kbd>Alt</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
-* Linux: <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
-* Windows: <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
 
 ## Packaging
 
@@ -65,13 +56,3 @@ npm run pack:linux
 ```
 npm run test
 ```
-
-## Maintainers
-
-- [@jschr](https://github.com/jschr)
-- [@pronebird](https://github.com/pronebird)
-
-## Apps using this boilerplate
-
-- [Mullvad VPN app](https://github.com/mullvad/mullvadvpn-app)
-- [YouTube Downloader Electron](https://github.com/vanzylv/youtube-downloader-electron)
