@@ -12,18 +12,18 @@ export function findDeletedFiles(dirs, files, onMissing) {
   });
 }
 
+export function findOrphanTags(files, tags, onFindOrphan) {
+  var allTags = [];
+  for (var key in files) { allTags = allTags.concat(files[key].tags); }
+  for (var tag in tags) { if (allTags.indexOf(tag) == -1) onFindOrphan(tag); }
+}
+
 export function findOutOfDateFiles(dirs, onDocfind) {
   return new Promise(function(resolve, reject) {
     var promises = [];
     for (var dir in dirs) promises.push(scanDir(dir, dir, onDocfind, dirs[dir].incSubFolders));
     Promise.all(promises).then( allResults => resolve(allResults) );
   });
-}
-
-export function findOrphanTags(files, tags, onFindOrphan) {
-  var allTags = [];
-  for (var key in files) { allTags = allTags.concat(files[key].tags); }
-  for (var tag in tags) { if (allTags.indexOf(tag) == -1) onFindOrphan(tag); }
 }
 
 function scanDir(dir, searchRoot, onDocfind, incSubDirs=false) {
