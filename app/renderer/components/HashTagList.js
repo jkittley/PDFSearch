@@ -13,6 +13,11 @@ export const HashtagItem = (props) => {
 }
 
 export const HashTagList = (props) => {
+
+  if (Object.keys(props.tags).length === 0) return <ListGroup flush>
+  <ListGroupItem  style={{ backgroundColor: "#eee"}}>No Hashtags detected</ListGroupItem>
+  </ListGroup>;
+
   return <ListGroup flush>
     { Object.keys(props.tags).sort().map( (tagname, i) => <HashtagItem key={i} {...props.tags[tagname]} onCheckChange={ props.onCheckChange } />)}
   </ListGroup>;
