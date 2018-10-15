@@ -2,7 +2,6 @@
 import { ipcRenderer } from 'electron';
 import { scanPDFFile } from "../pdfscan";
 import { findOutOfDateFiles } from '../dirscan';
-import ProgressBar from 'electron-progressbar';
 
 window.onload = function () {
 
