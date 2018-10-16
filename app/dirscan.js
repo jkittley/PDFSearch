@@ -2,13 +2,20 @@ const fs = require('fs');
 var path = require('path')
 
 export function findDeletedFiles(dirs, files, onMissing) {
+
+  // Check directories exists
+  for (var dir in dirs) {
+    console.log("CHECKING IF DIR EXISTS");
+    if (!fs.existsSync(dir)) onMissing(dir, true);
+  }
+
   Object.keys(files).forEach(absolute => {
     // If the file has been removed
-    fs.exists(absolute, function(exists) { if (!exists) return onMissing(absolute); });
+    fs.exists(absolute, function(exists) { if (!exists) return onMissing(absolute, false); });
     // If the search root is no longer listed
-    if (Object.keys(dirs).indexOf(files[absolute].searchRoot) == -1 ) return onMissing(absolute);
+    if (Object.keys(dirs).indexOf(files[absolute].searchRoot) == -1 ) return onMissing(absolute, false);
     // If the sub folder is no longer included
-    if (files[absolute].path !== files[absolute].searchRoot && !dirs[files[absolute].searchRoot].incSubFolders) return onMissing(absolute);
+    if (files[absolute].path !== files[absolute].searchRoot && !dirs[files[absolute].searchRoot].incSubFolders) return onMissing(absolute, false);
   });
 }
 
@@ -22,7 +29,7 @@ export function findOutOfDateFiles(dirs, onDocfind) {
   return new Promise(function(resolve, reject) {
     var promises = [];
     for (var dir in dirs) promises.push(scanDir(dir, dir, onDocfind, dirs[dir].incSubFolders));
-    Promise.all(promises).then( allResults => resolve(allResults) );
+    Promise.all(promises).then( allResults => resolve(allResults) ).catch( allErrors => reject(allErrors));
   });
 }
 
@@ -31,6 +38,8 @@ function scanDir(dir, searchRoot, onDocfind, incSubDirs=false) {
 
     var foundDocs = [];
     var promises = [];
+
+    if (!fs.existsSync(dir)) reject("Directory Missing: " + dir);
 
     fs.readdir(dir, (err, files) => {
       if (err) reject();

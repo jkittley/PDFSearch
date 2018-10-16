@@ -22,6 +22,7 @@ class Home extends Component {
       numFilesToScan: 0,
       numFilesScanned: 0
     }
+    console.log(this.state);
   }
 
   componentWillMount() {
@@ -42,7 +43,10 @@ class Home extends Component {
           this.outOfDateFileFound(payload.absolute, payload.doc);
           break;
         case "outOfDateScanComplete":
-          this.outOfDateScanComplete(payload);
+          this.outOfDateScanComplete(payload, false);
+          break;
+        case "outOfDateScanFailed":
+          this.outOfDateScanComplete(payload, true);
           break;
       }
     });
@@ -76,16 +80,20 @@ class Home extends Component {
       this.props.upsertFile(absolute, doc);
   }
 
-  outOfDateScanComplete(allResults) {
-    console.log(allResults);
+  outOfDateScanComplete(allResults, withErrors) {
+    console.log(allResults, "withErrors: ", withErrors);
     this.setState( prevState =>  { return { isFindingOutOfDate: false }});
   }
 
   findDeleted() {
     console.log("Checking for files which have been deleted");
-    findDeletedFiles(this.props.dirs, this.props.files, function(missingFileKey) {
-      console.log('MISSING', missingFileKey);
-      this.props.removeFile(missingFileKey);
+    findDeletedFiles(this.props.dirs, this.props.files, function(missingPath, isDirectory) {
+      console.log('MISSING', missingPath);
+      if (isDirectory) {
+        console.log("Dir moved");
+      } else {
+        this.props.removeFile(missingPath);
+      }
     }.bind(this));
   }
 
@@ -145,7 +153,7 @@ class Home extends Component {
             { Object.keys(this.props.dirs).length === 0 ? <div>
             <h1 className="display-4">Welcome</h1>
             <p>To begin, add at least one folder to scan.</p>
-            <Button color="primary" onClick={() => this.handleSettings()} size="sm">Add Folders</Button>
+            <Button color="primary" onClick={() => this.props.showSettings()} size="sm">Add Folders</Button>
             </div> : ''}
 
             { !this.state.isScanning && Object.keys(this.props.dirs).length > 0 && Object.keys(this.props.files).length === 0 ? <div>
@@ -156,6 +164,7 @@ class Home extends Component {
             <ScaleLoader height={20}/>
             : 'Check Again' }
             </Button>
+            <Button color="secondary" onClick={() => this.props.showSettings()} size="sm" className="ml-2">Add Folders</Button>
             </div>
             : null }
 
@@ -199,7 +208,7 @@ class Home extends Component {
   }
   renderResults() {
     return (
-      <Col xs="8" style={{ height: "100vh", width: "100%", overflowY: "auto", overflowX: "hidden" }} className="m-0 p-0">
+      <Col xs="8" style={ styles.colResults } className="m-0 p-0">
 
       { this.renderResultsHeader() }
 
@@ -216,7 +225,7 @@ class Home extends Component {
   render() {
     return (<div className="container-fluid">
         <Row>
-          <Col xs="4" className="border-right p-0" style={{ height: "100vh", width: "100%", backgroundColor: "#34363a", overflowY: "auto", overflowX: "hidden" }}>
+          <Col xs="4" className="border-right p-0" style={ styles.colTags }>
             <Row className="pb-2">
               <Col>
                 <h3 className="ml-3 mt-3"><img src="assets/logo.png" height="30"/></h3>
@@ -228,6 +237,11 @@ class Home extends Component {
         </Row>
       </div>);
   }
+}
+
+const styles = {
+  colResults: { height: "100vh", width: "100%", overflowY: "auto", overflowX: "hidden" },
+  colTags: { height: "100vh", width: "100%", backgroundColor: "#34363a", overflowY: "auto", overflowX: "hidden" }
 }
 
 export default withRouter(Home);

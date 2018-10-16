@@ -34,6 +34,12 @@ function findOutOfDate(message) {
       type: "outOfDateScanComplete",
       payload: allDocs
     })
+  }).catch(function (allErrors) {
+    console.log(allErrors);
+    ipcRenderer.send('fgmessage', {
+      type: "outOfDateScanFailed",
+      payload: allErrors
+    })
   });
 }
 
