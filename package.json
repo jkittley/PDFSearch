@@ -1,7 +1,7 @@
 {
   "name": "PDFSearch",
-  "version": "0.0.0",
-  "description": "Hashtag Literature Search",
+  "version": "0.1.0",
+  "description": "Index PDF files by the Hashtag they include in the comments",
   "main": "init.js",
   "author": {
     "name": "Jacob Kittley",
