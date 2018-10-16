@@ -2,7 +2,7 @@ import React from 'react';
 import { ListGroupItem, FormGroup, Label, Input, ListGroup } from 'reactstrap';
 
 export const HashtagItem = (props) => {
-  return <ListGroupItem  style={{ backgroundColor: "#eee"}}>
+  return <ListGroupItem  style={{ backgroundColor: "#47484c", color: '#fff' }}>
   <FormGroup check>
     <Label check>
       <Input type="checkbox" onChange={ () => props.onCheckChange(props.name) } checked={props.checked} />

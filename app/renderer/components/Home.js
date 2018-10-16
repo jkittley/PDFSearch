@@ -216,10 +216,10 @@ class Home extends Component {
   render() {
     return (<div className="container-fluid">
         <Row>
-          <Col xs="4" className="border-right p-0" style={{ height: "100vh", width: "100%", backgroundColor: "#eee", overflowY: "auto", overflowX: "hidden" }}>
+          <Col xs="4" className="border-right p-0" style={{ height: "100vh", width: "100%", backgroundColor: "#34363a", overflowY: "auto", overflowX: "hidden" }}>
             <Row className="pb-2">
               <Col>
-                <h3 className="ml-3 mt-3">#Lit</h3>
+                <h3 className="ml-3 mt-3"><img src="assets/logo.png" height="30"/></h3>
               </Col>
             </Row>
             <HashtagList tags={this.props.tags} onCheckChange={ (tagname) => this.props.toggleCheckTag(this.props.tags[tagname]) } />

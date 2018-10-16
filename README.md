@@ -1,4 +1,4 @@
-# HashTag Lit
+# \#PDFSearch
 This is a cross platform application designed to search PDF files. This application will scan a set of selected folders for PDF files and search their content, looking for hashtags (e.g. \#posiHadron). It then complies a list of the discovered documents which can be filtering by the discovered hashtags.
 
 It was originally designed for researchers who need to collate scientific papers. However, it has found many other users. If you want to help then please contact Jacob - jacob@kittley.com.
@@ -19,7 +19,7 @@ This project was built using [electron-react-redux-boilerplate](https://github.c
 
 Clone the repository
 ```bash
-git clone --depth=1 https://github.com/jkittley/hashtaglit.git
+git clone --depth=1 https://github.com/jkittley/pdfsearch.git
 ```
 
 Install dependencies
